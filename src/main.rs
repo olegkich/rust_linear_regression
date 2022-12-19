@@ -30,8 +30,8 @@ fn load_data() -> (Vec<f32>, Vec<f32>) {
   (x_data, y_data)
 }
 
-fn draw_plot(x: Vec<f32>, y: Vec<f32>) {
-  let trace1 = Scatter::new(x, y)
+fn draw_plot(x: &Vec<f32>, y: &Vec<f32>) {
+  let trace1 = Scatter::new(x.to_vec(), y.to_vec())
     .name("trace1")
     .mode(Mode::Markers);
   
@@ -46,10 +46,24 @@ fn draw_plot(x: Vec<f32>, y: Vec<f32>) {
   plot.show();
 }
 
+fn loss(x: &Vec<f32>, y: &Vec<f32>, w: f32, b: f32) -> f32 {
+  let mut loss: f32 = 0.0;
+  let n = x.len();
+
+  for i in 0..n {
+    loss += (y[i] - (w*x[i] + b)) * (y[i] - (w*x[i] + b));
+  };
+
+  loss/n as f32
+}
+
+
 
 fn main() {
   let (x, y) = load_data();
-  draw_plot(x, y);
+  draw_plot(&x, &y);
+  let loss = loss(&x, &y, 1.2, -5.0);
 
+  println!("loss: {}", loss);
 }
 
