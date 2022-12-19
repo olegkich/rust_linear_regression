@@ -1,9 +1,6 @@
 use std::{fs, vec};
-
-fn main() {
-  let (x, y) = load_data();
-  
-}
+use plotly::common::Mode;
+use plotly::{Layout, Plot, Scatter}; 
 
 fn load_data() -> (Vec<f32>, Vec<f32>) {
   let s = fs::read_to_string("data.txt").expect("Read file");
@@ -32,3 +29,27 @@ fn load_data() -> (Vec<f32>, Vec<f32>) {
 
   (x_data, y_data)
 }
+
+fn draw_plot(x: Vec<f32>, y: Vec<f32>) {
+  let trace1 = Scatter::new(x, y)
+    .name("trace1")
+    .mode(Mode::Markers);
+  
+
+  let mut plot = Plot::new();
+  plot.add_trace(trace1);
+  
+
+  let layout = Layout::new().title("<b>Line and Scatter Plot</b>".into());
+  plot.set_layout(layout);
+
+  plot.show();
+}
+
+
+fn main() {
+  let (x, y) = load_data();
+  draw_plot(x, y);
+
+}
+
